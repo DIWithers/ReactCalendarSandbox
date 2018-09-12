@@ -4,14 +4,12 @@ import moment from 'moment';
 class Calendar extends Component {
     constructor(props) {
         super(props);
-        const now = moment();
-        const startOfWeek = now.startOf('week');
-        const endOfWeek = now.endOf('week');
+        //Moments are mutable, everyone needs their own copy
         this.state = {
-            now: now,
-            startOfWeek,
-            endOfWeek,
-            currentMonth: startOfWeek.format("MMMM YYYY")
+            selectedDate: moment(),
+            startOfWeek: moment().startOf('week'),
+            endOfWeek: moment().endOf('week'),
+            currentMonth: moment().format("MMMM YYYY"),
         }
     }
     renderHeader() {
@@ -44,7 +42,32 @@ class Calendar extends Component {
     }
 
     renderCells() {
+        const { startOfWeek, endOfWeek, selectedDate, currentMonth } = this.state;
+        const dateFormat = "D";
+        let formattedDate = "";
+        let row = null;
+        let days = [];
+        let day = startOfWeek.clone();
+        let endDate = endOfWeek.clone();
+        let monthStart = selectedDate.startOf('month');
+        while( day <= endDate) {
+            formattedDate = day.format(dateFormat);
+            const cloneDay = day;
+            days.push(
+                <div 
+                    className={ `col cell `}
+                    key={day.toString()}
+                >
+                    <span className="number">{formattedDate}</span>
+                    <span className="bg">{formattedDate}</span>
+                </div>
+            )
+            day = day.add(1, 'day');
 
+        }
+        row = <div className="row" key={day}>{days}</div>
+        days = [];
+        return <div className="body">{row}</div>;
     }
 
     onDateClick = day => {
@@ -72,6 +95,7 @@ class Calendar extends Component {
             <div className="calendar">
                 {this.renderHeader()}
                 {this.renderDays()}
+                {this.renderCells()}
             </div>
         );
     }
