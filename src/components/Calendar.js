@@ -83,7 +83,7 @@ class Calendar extends Component {
         this.setState({
             startOfWeek: this.state.startOfWeek.add(1, 'week'),
             endOfWeek: this.state.endOfWeek.add(1, 'week'),
-            currentMonth: this.state.startOfWeek.format("MMMM YYYY")
+            currentMonth: this.state.startOfWeek.clone().add(4, 'day').format("MMMM YYYY")
         })
     }
     
@@ -91,7 +91,7 @@ class Calendar extends Component {
         this.setState({
             startOfWeek: this.state.startOfWeek.subtract(1, 'week'),
             endOfWeek: this.state.endOfWeek.subtract(1, 'week'),
-            currentMonth: this.state.startOfWeek.format("MMMM YYYY")
+            currentMonth: this.state.startOfWeek.clone().add(4, 'day').format("MMMM YYYY")
         })
     }
 
