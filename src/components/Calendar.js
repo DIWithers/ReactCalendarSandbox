@@ -49,21 +49,24 @@ class Calendar extends Component {
         let days = [];
         let day = startOfWeek.clone();
         let endDate = endOfWeek.clone();
-        let monthStart = selectedDate.startOf('month');
+        let monthStart = selectedDate.clone().startOf('month');
         while( day <= endDate) {
             formattedDate = day.format(dateFormat);
-            const cloneDay = day;
+            const cloneDay = day.clone();
             days.push(
                 <div 
-                    className={ `col cell `}
+                    className={ `col cell ${
+                        day.isSame(selectedDate, 'day') ?
+                            "selected" : ""
+                    }`}
                     key={day.toString()}
+                    onClick={() => this.onDateClick(cloneDay)}
                 >
                     <span className="number">{formattedDate}</span>
                     <span className="bg">{formattedDate}</span>
                 </div>
             )
             day = day.add(1, 'day');
-
         }
         row = <div className="row" key={day}>{days}</div>
         days = [];
@@ -71,7 +74,9 @@ class Calendar extends Component {
     }
 
     onDateClick = day => {
-
+        this.setState({
+            selectedDate: day
+        });
     };
   
     nextWeek = () => {
